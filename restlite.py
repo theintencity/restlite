@@ -181,7 +181,6 @@ def represent(value, type='*/*'):
     >>> class user: 
     ...    def __init__(self, name): self.name = name
     ...    def _list_(self): return  ('allow', self.name)
-    ...    def __str(self): return 'allow=' + self.name
     >>> u1, u2 = user('kundan'), user('admin')
     >>> value = ('file', (('name', 'myfile.txt'), ('acl', [u1, u2])))
     >>> represent(value, type='application/json')[1]
