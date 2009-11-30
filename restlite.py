@@ -25,7 +25,7 @@ from wsgiref.util import setup_testing_defaults
 from xml.dom import minidom
 import os, re, sys, sqlite3, json, Cookie, base64, md5, time, traceback
 
-_debug = True
+_debug = False
 
 defaultType = 'application/json' # default content type if ACCEPT is */*. Used in represent and router.
 
