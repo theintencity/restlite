@@ -405,8 +405,12 @@ class AuthModel(Model):
         hash, tm = token[:-10], token[-10:]
         return md5.new(self.mypass + str(user_id) + tm).hexdigest() == hash
     
-    def register(self, email, realm, password):
-        self.sql('INSERT INTO user_login VALUES (NULL, ?, ?, ?, NULL)', (email, realm, self.hash(email, realm, password)))
+    def register(self, email, realm, password='', hash=None):
+        if not hash: hash = self.hash(email, realm, password)
+        self.sql('INSERT INTO user_login VALUES (NULL, ?, ?, ?, NULL)', (email, realm, hash))
+        user_id = self.sql1('SELECT last_insert_rowid()')[0]
+        self.sql('UPDATE user_login SET token=? WHERE id=?', (self.token(user_id), user_id))
+        return user_id
 
     def login(self, request):
         hdr = request.get('HTTP_AUTHORIZATION', None)
@@ -458,8 +462,13 @@ class AuthModel(Model):
             else:
                 found = self.sql1('SELECT email FROM user_login WHERE id=? AND token=?', (user_id, token))
                 if not found:
+                    request['COOKIE']['user_id']['expires'] = 0
+                    request['COOKIE']['user_id']['path'] = '/'
                     request['COOKIE']['token']['expires'] = 0
-                    raise Status, '404 Not Found'
+                    request['COOKIE']['token']['path'] = '/'
+                    realm = "localhost"
+                    request.start_response('401 Unauthorized', [('WWW-Authenticate', 'Basic realm="%s"'%(realm,))])
+                    raise Status, '401 Unauthorized'
                 email = found[0]
             return (user_id, email, token)
         else: 
