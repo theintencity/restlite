@@ -1,5 +1,4 @@
-import os, thread, md5
-import restlite
+import os, thread, restlite
 
 # The top-level directory for all file requests
 

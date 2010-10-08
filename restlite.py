@@ -23,7 +23,9 @@ Dependencies: Python 2.6.
 
 from wsgiref.util import setup_testing_defaults
 from xml.dom import minidom
-import os, re, sys, sqlite3, json, Cookie, base64, md5, time, traceback
+import os, re, sys, sqlite3, Cookie, base64, hashlib, time, traceback
+try: import json
+except: print 'Cannot import json. Please use Python 2.6.'; raise
 
 _debug = False
 
@@ -391,19 +393,19 @@ class AuthModel(Model):
     authentication methods.'''
     def __init__(self, conn=None):
         Model.__init__(self, conn)
-        self.mypass = md5.new(str(id(self)) + str(time.time())).hexdigest()
+        self.mypass = hashlib.md5(str(id(self)) + str(time.time())).hexdigest()
         self.create(_loginTable)
         
     def hash(self, email, realm, password):
-        return md5.new('%s:%s:%s'%(email, realm, password)).hexdigest()
+        return hashlib.md5('%s:%s:%s'%(email, realm, password)).hexdigest()
     
     def token(self, user_id):
         tm = '%010x'%(int(time.time()),)
-        return md5.new(self.mypass + str(user_id) + tm).hexdigest() + tm
+        return hashlib.md5(self.mypass + str(user_id) + tm).hexdigest() + tm
     
     def valid(self, user_id, token):
         hash, tm = token[:-10], token[-10:]
-        return md5.new(self.mypass + str(user_id) + tm).hexdigest() == hash
+        return hashlib.md5(self.mypass + str(user_id) + tm).hexdigest() == hash
     
     def register(self, email, realm, password='', hash=None):
         if not hash: hash = self.hash(email, realm, password)
@@ -435,7 +437,7 @@ class AuthModel(Model):
                 return (user_id, email, token)
         elif (hasattr(request, 'user_id') or hasattr(request, 'email')) and hasattr(request, 'token'):
             if request.email == 'admin':
-                adminhash = md5.new('%s::%s'%(request.email, self.mypass)).hexdigest()
+                adminhash = hashlib.md5('%s::%s'%(request.email, self.mypass)).hexdigest()
                 print request.token, adminhash
                 if adminhash != request.token: raise Status, '401 Not Authorized'
                 user_id, email, token = 0, request.email, adminhash
@@ -456,7 +458,7 @@ class AuthModel(Model):
         elif 'COOKIE' in request and 'user_id' in request['COOKIE'] and 'token' in request['COOKIE']:
             user_id, token = int(request['COOKIE'].get('user_id').value), request['COOKIE'].get('token').value
             if user_id == 0:
-                email = 'admin'; hash = md5.new('%s::%s'%(email, self.mypass)).hexdigest()
+                email = 'admin'; hash = hashlib.md5('%s::%s'%(email, self.mypass)).hexdigest()
                 if hash != token:
                     raise Status, '401 Not Authorized as Admin'
             else:
