@@ -46,7 +46,7 @@ This section describes how to start using restlite.
 
 ## Getting the software ##
 
-I would suggest you get the sources using [SVN](http://code.google.com/p/restlite/source/checkout). For some reason, if that does not work, you should download the latest source [archive](http://code.google.com/p/restlite/downloads/list), uncompress it, set the directory in PYTHONPATH environment variable. There is one source file for the module, rtmplite.py, and one example file, example.py, which shows how to use it for an example application.
+I would suggest you get the sources using [git](https://github.com/theintencity/restlite.git). For some reason, if that does not work, you should download the latest source [archive](/restlite-1.0.tgz), uncompress it, set the directory in PYTHONPATH environment variable. There is one source file for the module, rtmplite.py, and one example file, example.py, which shows how to use it for an example application.
 
 ## What is WSGI? ##
 
