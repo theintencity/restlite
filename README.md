@@ -16,7 +16,7 @@
 # What is restlite? #
 Restlite is a light-weight Python implementation of server tools for quick prototyping of your RESTful web service. Instead of building a complex framework, it aims at providing functions and classes that allows your to build your own application.
 
-restlite = REST + Python + JSON + XML + SQLite + authentication
+>> restlite = REST + Python + JSON + XML + SQLite + authentication
 
 ### Features ###
 
