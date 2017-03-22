@@ -1,7 +1,8 @@
 '''
 restlite: REST + Python + JSON + XML + SQLite + authentication.
 
-http://code.google.com/p/restlite
+https://github.com/theintencity/restlite
+Previously http://code.google.com/p/restlite
 Copyright (c) 2009, Kundan Singh, kundan10@gmail.com. All rights reserved. 
 License: released under LGPL (Lesser GNU Public License).
 
