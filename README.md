@@ -7,6 +7,9 @@
 > License: [GNU Lesser GPL](http://www.gnu.org/licenses/lgpl.html)  
 > Others: starred by 21 users  
 
+**New:** The new RTClite project is a superset of this RESTlite project. Please migrate to or start using the [RTClite project](https://github.com/theintencity/rtclite) project instead of this. More information at https://github.com/theintencity/rtclite
+
+
   1. [What is restlite?](#What_is_restlite?.md)
     * [features](#Features.md), [dependencies](#Dependencies.md), [feedback](#Feedback.md)
   1. [How to get started?](#Getting_Started.md)
